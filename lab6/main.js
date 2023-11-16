@@ -7,8 +7,8 @@ if(!gl)
 }
 
 const vertexData = [];
-const r = .5;
-const lines = 100;
+const r = 1;
+const lines = 50;
 
 for (let i = 0; i <= lines; i++) {
     const theta = 2*(i / lines)*Math.PI;
