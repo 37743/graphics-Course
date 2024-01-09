@@ -78,11 +78,9 @@ window.onload = function init() {
 
 
 function render() {
-
     gl.clear( gl.COLOR_BUFFER_BIT );
     for (i=0; i<polynum; i++) {
       gl.drawArrays(gl.TRIANGLE_FAN, start[i], indices[i]);
     }
     window.requestAnimFrame(render);
-
 }

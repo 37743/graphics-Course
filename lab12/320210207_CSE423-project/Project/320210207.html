@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<script id="vertex-shader" type="x-shader/x-vertex">
+
+attribute  vec4 vPosition;
+attribute  vec4 vColor;
+varying vec4 fColor;
+
+uniform vec3 theta;
+uniform vec3 tr;
+uniform vec3 scl;
+
+void main()
+{
+    // Compute the sines and cosines of theta for each of
+    //   the three axes in one computation.
+    vec3 angles = radians( theta );
+    vec3 c = cos( angles );
+    vec3 s = sin( angles );
+
+    // Remember: thse matrices are column-major
+    mat4 rx = mat4( 1.0,  0.0,  0.0, 0.0,
+		    0.0,  c.x,  s.x, 0.0,
+		    0.0, -s.x,  c.x, 0.0,
+		    0.0,  0.0,  0.0, 1.0 );
+
+    mat4 ry = mat4( c.y, 0.0, -s.y, 0.0,
+		    0.0, 1.0,  0.0, 0.0,
+		    s.y, 0.0,  c.y, 0.0,
+		    0.0, 0.0,  0.0, 1.0 );
+
+
+    mat4 rz = mat4( c.z, s.z, 0.0, 0.0,
+		    -s.z,  c.z, 0.0, 0.0,
+		    0.0,  0.0, 1.0, 0.0,
+		    0.0,  0.0, 0.0, 1.0 );
+
+    mat4 tr = mat4( 1.0, 0.0, 0.0, 0,
+            0.0, 1.0, 0.0, 0,
+            0.0, 0.0, 1.0, 0,
+            tr.x, tr.y, tr.z, 1.0 );
+
+    mat4 scl = mat4( scl.x, 0.0, 0.0, 0,
+            0.0, scl.y, 0.0, 0,
+            0.0, 0.0, scl.z, 0,
+            0.0, 0.0, 0.0 , 1.0 );
+
+    fColor = vColor;
+    gl_Position =  rz * ry * rx * tr * scl * vPosition;
+    gl_Position.z = -gl_Position.z;
+}
+</script>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+precision mediump float;
+varying vec4 fColor;
+
+void main()
+{
+    gl_FragColor = fColor;
+}
+</script>
+
+<script type="text/javascript" src="../Common/webgl-utils.js"></script>
+<script type="text/javascript" src="../Common/initShaders.js"></script>
+<script type="text/javascript" src="../Common/MV.js"></script>
+<script type="text/javascript" src="320210207.js"></script>
+
+<body>
+    <p> 
+        <h1> 
+            <center> Scaling, Rotating and Translating Cube </center>
+        </h1>
+    </p>
+<center> <canvas id="gl-canvas" width="512"" height="512">
+Oops ... your browser doesn't support the HTML5 canvas element
+</canvas>
+</center>
+<br>
+<center>
+<button id= "xButton">Rotate X</button>
+<button id= "yButton">Rotate Y</button>
+<button id= "zButton">Rotate Z</button>
+<br><br>
+<button id= "MoveButton">Move</button>
+<button id= "SlowButton">Slow Motion</button>
+<button id= "StopButton">Pause/Resume</button>
+<br><br>
+<div>
+    <b> Translation X: </b> &emsp;-1<input id="slide1" type="range"
+    min="-1" max="1" step="0.01" value="0" />1
+</div>
+    
+<div>
+    <b> Translation Y: </b> &emsp;-1<input id="slide2" type="range"
+    min="-1" max="1" step="0.01" value="0" />1
+</div>
+    
+<div>
+    <b> Translation Z: </b> &emsp;-1<input id="slide3" type="range"
+    min="-1" max="1" step="0.01" value="0" />1
+</div>
+
+<div>
+    <b> Scale X: </b> &emsp; &emsp; &emsp;.5<input id="slide4" type="range"
+    min=".5" max="2" step="0.01" value="1.0" />2
+</div>
+    
+<div>
+    <b> Scale Y: </b> &emsp; &emsp; &emsp;.5<input id="slide5" type="range"
+    min=".5" max="2" step="0.01" value="1.0" />2
+</div>
+    
+<div>
+    <b> Scale Z:  </b> &emsp; &emsp; &emsp;.5<input id="slide6" type="range"
+    min=".5" max="2" step="0.01" value="1.0" />2
+</div>
+</center>
+<h3> <center> Name:&emsp; Yousef Ibrahim Gomaa Mahmoud &emsp;|&emsp; ID:&emsp; 320210207 </center> </h3>
+</body>
+</html>
